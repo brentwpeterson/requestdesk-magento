@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog REST API Configuration
+ *
+ * Endpoints:
+ * - POST   /V1/requestdesk/blog/posts          - Create/update post from RequestDesk
+ * - GET    /V1/requestdesk/blog/posts          - List all posts
+ * - GET    /V1/requestdesk/blog/posts/:postId  - Get single post
+ * - DELETE /V1/requestdesk/blog/posts/:postId  - Delete post
+ * - POST   /V1/requestdesk/blog/posts/:postId/products - Link products to post
+ * - GET    /V1/requestdesk/blog/posts/:postId/products - Get linked products
+ * - GET    /V1/requestdesk/blog/products/:productId/posts - Get posts for product
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <!-- Create/Update Post (Main endpoint RequestDesk calls) -->
+    <route url="/V1/requestdesk/blog/posts" method="POST">
+        <service class="RequestDesk\Blog\Api\PostManagementInterface" method="createOrUpdate"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::manage"/>
+        </resources>
+    </route>
+
+    <!-- List Posts -->
+    <route url="/V1/requestdesk/blog/posts" method="GET">
+        <service class="RequestDesk\Blog\Api\PostRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::view"/>
+        </resources>
+    </route>
+
+    <!-- Get Single Post -->
+    <route url="/V1/requestdesk/blog/posts/:postId" method="GET">
+        <service class="RequestDesk\Blog\Api\PostRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::view"/>
+        </resources>
+    </route>
+
+    <!-- Delete Post -->
+    <route url="/V1/requestdesk/blog/posts/:postId" method="DELETE">
+        <service class="RequestDesk\Blog\Api\PostRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::manage"/>
+        </resources>
+    </route>
+
+    <!-- Link Products to Post -->
+    <route url="/V1/requestdesk/blog/posts/:postId/products" method="POST">
+        <service class="RequestDesk\Blog\Api\PostManagementInterface" method="linkProducts"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::manage"/>
+        </resources>
+    </route>
+
+    <!-- Get Linked Products -->
+    <route url="/V1/requestdesk/blog/posts/:postId/products" method="GET">
+        <service class="RequestDesk\Blog\Api\PostManagementInterface" method="getLinkedProducts"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::view"/>
+        </resources>
+    </route>
+
+    <!-- Get Posts for Product -->
+    <route url="/V1/requestdesk/blog/products/:productId/posts" method="GET">
+        <service class="RequestDesk\Blog\Api\PostManagementInterface" method="getPostsByProduct"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::view"/>
+        </resources>
+    </route>
+
+    <!-- Update Sync Status -->
+    <route url="/V1/requestdesk/blog/posts/:postId/sync-status" method="PUT">
+        <service class="RequestDesk\Blog\Api\PostManagementInterface" method="updateSyncStatus"/>
+        <resources>
+            <resource ref="RequestDesk_Blog::manage"/>
+        </resources>
+    </route>
+
+</routes>

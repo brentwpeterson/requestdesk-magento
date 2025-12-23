@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog Dependency Injection Configuration
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Interface Preferences -->
+    <preference for="RequestDesk\Blog\Api\Data\PostInterface"
+                type="RequestDesk\Blog\Model\Post"/>
+
+    <preference for="RequestDesk\Blog\Api\Data\PostSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+
+    <preference for="RequestDesk\Blog\Api\PostRepositoryInterface"
+                type="RequestDesk\Blog\Model\PostRepository"/>
+
+    <preference for="RequestDesk\Blog\Api\PostManagementInterface"
+                type="RequestDesk\Blog\Model\PostManagement"/>
+
+</config>

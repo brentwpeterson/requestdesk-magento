@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog Admin System Configuration
+ *
+ * Minimal configuration for API connection settings.
+ * All blog management happens via RequestDesk.
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="requestdesk" translate="label" sortOrder="400">
+            <label>RequestDesk</label>
+        </tab>
+
+        <section id="requestdesk_blog" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Blog</label>
+            <tab>requestdesk</tab>
+            <resource>RequestDesk_Blog::config</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Blog</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable/disable the blog functionality on the frontend.</comment>
+                </field>
+
+                <field id="blog_title" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Blog Title</label>
+                    <comment>Title displayed on the blog listing page.</comment>
+                </field>
+
+                <field id="posts_per_page" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Posts Per Page</label>
+                    <validate>validate-digits</validate>
+                    <comment>Number of posts to display per page on the blog listing.</comment>
+                </field>
+            </group>
+
+            <group id="api" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>RequestDesk API Configuration</label>
+
+                <field id="api_key" translate="label comment" type="obscure" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>API key for authenticating with RequestDesk. Get this from your RequestDesk account.</comment>
+                </field>
+
+                <field id="endpoint_url" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>RequestDesk API Endpoint</label>
+                    <comment>Base URL for RequestDesk API (e.g., https://api.requestdesk.ai)</comment>
+                </field>
+
+                <field id="company_id" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Company ID</label>
+                    <comment>Your RequestDesk company identifier.</comment>
+                </field>
+            </group>
+
+            <group id="seo" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SEO Settings</label>
+
+                <field id="url_prefix" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Blog URL Prefix</label>
+                    <comment>URL prefix for blog pages (default: "blog"). Leave empty for /blog</comment>
+                </field>
+
+                <field id="meta_title" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Meta Title</label>
+                    <comment>Default meta title for blog listing page.</comment>
+                </field>
+
+                <field id="meta_description" translate="label comment" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Meta Description</label>
+                    <comment>Default meta description for blog listing page.</comment>
+                </field>
+            </group>
+
+        </section>
+    </system>
+</config>

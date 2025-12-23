@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog Extension - Database Schema
+ *
+ * Tables:
+ * - requestdesk_blog_post: Blog posts with RequestDesk sync fields
+ * - requestdesk_blog_category: Blog categories
+ * - requestdesk_blog_post_category: Many-to-many post/category relationship
+ * - requestdesk_blog_product: Product-to-post linking (critical for Magento)
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <!-- Blog Posts Table -->
+    <table name="requestdesk_blog_post" resource="default" engine="innodb" comment="RequestDesk Blog Posts">
+        <column xsi:type="int" name="post_id" unsigned="true" nullable="false" identity="true" comment="Post ID"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Post Title"/>
+        <column xsi:type="mediumtext" name="content" nullable="true" comment="Post Content"/>
+        <column xsi:type="varchar" name="url_key" nullable="false" length="255" comment="URL Key"/>
+        <column xsi:type="varchar" name="meta_title" nullable="true" length="255" comment="Meta Title"/>
+        <column xsi:type="text" name="meta_description" nullable="true" comment="Meta Description"/>
+        <column xsi:type="varchar" name="featured_image" nullable="true" length="255" comment="Featured Image Path"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="0" comment="Status (0=Draft, 1=Published)"/>
+        <column xsi:type="varchar" name="author" nullable="true" length="255" comment="Author Name"/>
+        <column xsi:type="int" name="store_id" unsigned="true" nullable="false" default="0" comment="Store ID"/>
+        <!-- RequestDesk Sync Fields -->
+        <column xsi:type="varchar" name="requestdesk_post_id" nullable="true" length="50" comment="RequestDesk Post ID"/>
+        <column xsi:type="varchar" name="requestdesk_sync_status" nullable="true" length="20" default="pending" comment="Sync Status (synced/pending/failed)"/>
+        <column xsi:type="timestamp" name="requestdesk_last_sync" nullable="true" comment="Last Sync Timestamp"/>
+        <!-- Timestamps -->
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated At"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="post_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="REQUESTDESK_BLOG_POST_URL_KEY_STORE_ID">
+            <column name="url_key"/>
+            <column name="store_id"/>
+        </constraint>
+        <index referenceId="REQUESTDESK_BLOG_POST_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="REQUESTDESK_BLOG_POST_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <index referenceId="REQUESTDESK_BLOG_POST_REQUESTDESK_POST_ID" indexType="btree">
+            <column name="requestdesk_post_id"/>
+        </index>
+        <index referenceId="REQUESTDESK_BLOG_POST_FULLTEXT" indexType="fulltext">
+            <column name="title"/>
+            <column name="content"/>
+        </index>
+    </table>
+
+    <!-- Blog Categories Table -->
+    <table name="requestdesk_blog_category" resource="default" engine="innodb" comment="RequestDesk Blog Categories">
+        <column xsi:type="int" name="category_id" unsigned="true" nullable="false" identity="true" comment="Category ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Category Name"/>
+        <column xsi:type="varchar" name="url_key" nullable="false" length="255" comment="URL Key"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Category Description"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="1" comment="Status (0=Disabled, 1=Enabled)"/>
+        <column xsi:type="int" name="sort_order" unsigned="true" nullable="false" default="0" comment="Sort Order"/>
+        <column xsi:type="int" name="store_id" unsigned="true" nullable="false" default="0" comment="Store ID"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated At"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="category_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="REQUESTDESK_BLOG_CATEGORY_URL_KEY_STORE_ID">
+            <column name="url_key"/>
+            <column name="store_id"/>
+        </constraint>
+        <index referenceId="REQUESTDESK_BLOG_CATEGORY_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+
+    <!-- Post-Category Many-to-Many Relationship -->
+    <table name="requestdesk_blog_post_category" resource="default" engine="innodb" comment="Blog Post to Category Link">
+        <column xsi:type="int" name="post_id" unsigned="true" nullable="false" comment="Post ID"/>
+        <column xsi:type="int" name="category_id" unsigned="true" nullable="false" comment="Category ID"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="post_id"/>
+            <column name="category_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="REQUESTDESK_BLOG_POST_CAT_POST_ID_BLOG_POST_POST_ID"
+                    table="requestdesk_blog_post_category" column="post_id"
+                    referenceTable="requestdesk_blog_post" referenceColumn="post_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="REQUESTDESK_BLOG_POST_CAT_CAT_ID_BLOG_CAT_CAT_ID"
+                    table="requestdesk_blog_post_category" column="category_id"
+                    referenceTable="requestdesk_blog_category" referenceColumn="category_id" onDelete="CASCADE"/>
+        <index referenceId="REQUESTDESK_BLOG_POST_CATEGORY_CATEGORY_ID" indexType="btree">
+            <column name="category_id"/>
+        </index>
+    </table>
+
+    <!-- Product-Post Linking Table (CRITICAL for Magento) -->
+    <table name="requestdesk_blog_product" resource="default" engine="innodb" comment="Blog Post to Product Link">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="Link ID"/>
+        <column xsi:type="int" name="post_id" unsigned="true" nullable="false" comment="Post ID"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="int" name="position" unsigned="true" nullable="false" default="0" comment="Position"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="REQUESTDESK_BLOG_PRODUCT_POST_ID_PRODUCT_ID">
+            <column name="post_id"/>
+            <column name="product_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="REQUESTDESK_BLOG_PRODUCT_POST_ID_BLOG_POST_POST_ID"
+                    table="requestdesk_blog_product" column="post_id"
+                    referenceTable="requestdesk_blog_post" referenceColumn="post_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="REQUESTDESK_BLOG_PRODUCT_PRODUCT_ID_CAT_PRD_ENTITY_ID"
+                    table="requestdesk_blog_product" column="product_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="REQUESTDESK_BLOG_PRODUCT_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+    </table>
+
+</schema>

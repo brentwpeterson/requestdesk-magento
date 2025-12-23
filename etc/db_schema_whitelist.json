@@ -1,0 +1,82 @@
+{
+    "requestdesk_blog_post": {
+        "column": {
+            "post_id": true,
+            "title": true,
+            "content": true,
+            "url_key": true,
+            "meta_title": true,
+            "meta_description": true,
+            "featured_image": true,
+            "status": true,
+            "author": true,
+            "store_id": true,
+            "requestdesk_post_id": true,
+            "requestdesk_sync_status": true,
+            "requestdesk_last_sync": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "REQUESTDESK_BLOG_POST_STATUS": true,
+            "REQUESTDESK_BLOG_POST_STORE_ID": true,
+            "REQUESTDESK_BLOG_POST_REQUESTDESK_POST_ID": true,
+            "REQUESTDESK_BLOG_POST_FULLTEXT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "REQUESTDESK_BLOG_POST_URL_KEY_STORE_ID": true
+        }
+    },
+    "requestdesk_blog_category": {
+        "column": {
+            "category_id": true,
+            "name": true,
+            "url_key": true,
+            "description": true,
+            "status": true,
+            "sort_order": true,
+            "store_id": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "REQUESTDESK_BLOG_CATEGORY_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "REQUESTDESK_BLOG_CATEGORY_URL_KEY_STORE_ID": true
+        }
+    },
+    "requestdesk_blog_post_category": {
+        "column": {
+            "post_id": true,
+            "category_id": true
+        },
+        "index": {
+            "REQUESTDESK_BLOG_POST_CATEGORY_CATEGORY_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "REQUESTDESK_BLOG_POST_CAT_POST_ID_BLOG_POST_POST_ID": true,
+            "REQUESTDESK_BLOG_POST_CAT_CAT_ID_BLOG_CAT_CAT_ID": true
+        }
+    },
+    "requestdesk_blog_product": {
+        "column": {
+            "id": true,
+            "post_id": true,
+            "product_id": true,
+            "position": true
+        },
+        "index": {
+            "REQUESTDESK_BLOG_PRODUCT_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "REQUESTDESK_BLOG_PRODUCT_POST_ID_PRODUCT_ID": true,
+            "REQUESTDESK_BLOG_PRODUCT_POST_ID_BLOG_POST_POST_ID": true,
+            "REQUESTDESK_BLOG_PRODUCT_PRODUCT_ID_CAT_PRD_ENTITY_ID": true
+        }
+    }
+}
