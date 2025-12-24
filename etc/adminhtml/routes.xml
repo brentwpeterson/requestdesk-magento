@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog Admin Routes
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="requestdesk_blog" frontName="requestdesk_blog">
+            <module name="RequestDesk_Blog" before="Magento_Backend"/>
+        </route>
+    </router>
+</config>

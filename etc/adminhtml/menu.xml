@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog Admin Menu
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <!-- Main Menu Item under Content -->
+        <add id="RequestDesk_Blog::blog"
+             title="RequestDesk Blog"
+             translate="title"
+             module="RequestDesk_Blog"
+             parent="Magento_Backend::content"
+             sortOrder="60"
+             resource="RequestDesk_Blog::blog"/>
+
+        <!-- Posts Submenu -->
+        <add id="RequestDesk_Blog::posts"
+             title="Posts"
+             translate="title"
+             module="RequestDesk_Blog"
+             parent="RequestDesk_Blog::blog"
+             sortOrder="10"
+             action="requestdesk_blog/post/index"
+             resource="RequestDesk_Blog::view"/>
+    </menu>
+</config>

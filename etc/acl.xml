@@ -14,10 +14,12 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="RequestDesk_Blog::blog" title="RequestDesk Blog" sortOrder="100">
-                    <resource id="RequestDesk_Blog::view" title="View Blog Posts" sortOrder="10"/>
-                    <resource id="RequestDesk_Blog::manage" title="Manage Blog Posts" sortOrder="20"/>
-                    <resource id="RequestDesk_Blog::config" title="Configuration" sortOrder="30"/>
+                <resource id="Magento_Backend::content">
+                    <resource id="RequestDesk_Blog::blog" title="RequestDesk Blog" sortOrder="100">
+                        <resource id="RequestDesk_Blog::view" title="View Blog Posts" sortOrder="10"/>
+                        <resource id="RequestDesk_Blog::manage" title="Manage Blog Posts" sortOrder="20"/>
+                        <resource id="RequestDesk_Blog::config" title="Configuration" sortOrder="30"/>
+                    </resource>
                 </resource>
             </resource>
         </resources>
