@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Sync Products Layout
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Sync Products to RequestDesk</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="RequestDesk\Blog\Block\Adminhtml\Sync\Index"
+                   name="requestdesk_sync"
+                   template="RequestDesk_Blog::sync/index.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

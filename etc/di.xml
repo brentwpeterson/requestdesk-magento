@@ -23,6 +23,12 @@
     <preference for="RequestDesk\Blog\Api\PostManagementInterface"
                 type="RequestDesk\Blog\Model\PostManagement"/>
 
+    <preference for="RequestDesk\Blog\Api\DataExportInterface"
+                type="RequestDesk\Blog\Model\DataExport"/>
+
+    <preference for="RequestDesk\Blog\Api\ExternalBlogInterface"
+                type="RequestDesk\Blog\Model\ExternalBlog"/>
+
     <!-- Admin Grid Data Provider -->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
@@ -40,5 +46,19 @@
             <argument name="resourceModel" xsi:type="string">RequestDesk\Blog\Model\ResourceModel\Post</argument>
         </arguments>
     </virtualType>
+
+    <!-- Product Export Service -->
+    <type name="RequestDesk\Blog\Service\ProductExportService">
+        <arguments>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+        </arguments>
+    </type>
+
+    <!-- Post Import Service -->
+    <type name="RequestDesk\Blog\Service\PostImportService">
+        <arguments>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+        </arguments>
+    </type>
 
 </config>

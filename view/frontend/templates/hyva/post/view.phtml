@@ -1,0 +1,102 @@
+<?php
+/**
+ * RequestDesk Blog - Hyva Theme Post View Template
+ * Uses Tailwind CSS and Alpine.js
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use RequestDesk\Blog\Block\PostView;
+
+/** @var Escaper $escaper */
+/** @var PostView $block */
+
+$post = $block->getPost();
+?>
+
+<?php if ($post && $post->getId()): ?>
+<article class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Back Link -->
+    <a href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>"
+       class="inline-flex items-center text-gray-600 hover:text-primary mb-6 transition-colors duration-200">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <?= $escaper->escapeHtml(__('Back to Blog')) ?>
+    </a>
+
+    <!-- Post Header -->
+    <header class="mb-8">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            <?= $escaper->escapeHtml($post->getTitle()) ?>
+        </h1>
+
+        <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
+            <?php if ($post->getAuthor()): ?>
+                <span class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    <?= $escaper->escapeHtml($post->getAuthor()) ?>
+                </span>
+            <?php endif; ?>
+            <span class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <?= $escaper->escapeHtml($post->getCreatedAt()) ?>
+            </span>
+        </div>
+    </header>
+
+    <!-- Featured Image -->
+    <?php if ($post->getFeaturedImage()): ?>
+        <figure class="mb-8 rounded-lg overflow-hidden shadow-lg">
+            <img src="<?= $escaper->escapeUrl($post->getFeaturedImage()) ?>"
+                 alt="<?= $escaper->escapeHtmlAttr($post->getTitle()) ?>"
+                 class="w-full h-auto"
+                 loading="eager"/>
+        </figure>
+    <?php endif; ?>
+
+    <!-- Post Content -->
+    <div class="prose prose-lg max-w-none
+                prose-headings:font-bold prose-headings:text-gray-900
+                prose-p:text-gray-700 prose-p:leading-relaxed
+                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                prose-img:rounded-lg prose-img:shadow-md
+                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-gray-50 prose-blockquote:py-2 prose-blockquote:px-4
+                prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                prose-pre:bg-gray-900 prose-pre:text-gray-100">
+        <?= /* @noEscape */ $post->getContent() ?>
+    </div>
+
+    <!-- Post Footer -->
+    <footer class="mt-12 pt-8 border-t border-gray-200">
+        <a href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>"
+           class="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-darker transition-colors duration-200">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <?= $escaper->escapeHtml(__('Back to Blog')) ?>
+        </a>
+    </footer>
+</article>
+<?php else: ?>
+<div class="container mx-auto px-4 py-16 text-center">
+    <svg class="w-20 h-20 mx-auto text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">
+        <?= $escaper->escapeHtml(__('Post Not Found')) ?>
+    </h1>
+    <p class="text-gray-500 mb-6">
+        <?= $escaper->escapeHtml(__('The blog post you are looking for does not exist.')) ?>
+    </p>
+    <a href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>"
+       class="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary-darker transition-colors duration-200">
+        <?= $escaper->escapeHtml(__('Back to Blog')) ?>
+    </a>
+</div>
+<?php endif; ?>

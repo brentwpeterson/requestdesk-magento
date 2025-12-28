@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog Cron Configuration
+ *
+ * @category  RequestDesk
+ * @package   RequestDesk_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <!-- Import published posts from RequestDesk every hour -->
+        <job name="requestdesk_blog_import_posts"
+             instance="RequestDesk\Blog\Cron\ImportPosts"
+             method="execute">
+            <schedule>0 * * * *</schedule>
+        </job>
+    </group>
+</config>

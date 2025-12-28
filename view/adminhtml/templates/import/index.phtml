@@ -1,0 +1,282 @@
+<?php
+/**
+ * RequestDesk Post Import Template
+ *
+ * @var \RequestDesk\Blog\Block\Adminhtml\Import\Index $block
+ */
+
+$isConfigured = $block->isApiConfigured();
+$importedCount = $block->getImportedPostCount();
+$totalCount = $block->getTotalPostCount();
+$endpointUrl = $block->getEndpointUrl();
+?>
+
+<div class="requestdesk-import-container">
+    <div class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('Import Posts from RequestDesk')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <p><?= $block->escapeHtml(__('Import blog posts created in RequestDesk into your Magento store for display on the frontend.')) ?></p>
+
+            <?php if (!$isConfigured): ?>
+                <div class="message message-warning">
+                    <strong><?= $block->escapeHtml(__('API Not Configured')) ?></strong>
+                    <p><?= $block->escapeHtml(__('Please configure your RequestDesk API key before importing posts.')) ?></p>
+                    <a href="<?= $block->escapeUrl($block->getConfigUrl()) ?>" class="action-secondary">
+                        <?= $block->escapeHtml(__('Configure API')) ?>
+                    </a>
+                </div>
+            <?php else: ?>
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><?= $block->escapeHtml(__('Posts in Magento')) ?></label>
+                    </div>
+                    <div class="admin__field-value">
+                        <strong><?= (int)$totalCount ?></strong> <?= $block->escapeHtml(__('total posts')) ?>
+                        (<strong><?= (int)$importedCount ?></strong> <?= $block->escapeHtml(__('imported from RequestDesk')) ?>)
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><?= $block->escapeHtml(__('RequestDesk Endpoint')) ?></label>
+                    </div>
+                    <div class="admin__field-value">
+                        <?= $block->escapeHtml($endpointUrl) ?>
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><?= $block->escapeHtml(__('Import Status Filter')) ?></label>
+                    </div>
+                    <div class="admin__field-value">
+                        <select id="import-status-filter" class="admin__control-select">
+                            <option value="publish"><?= $block->escapeHtml(__('Published posts only')) ?></option>
+                            <option value=""><?= $block->escapeHtml(__('All posts (including drafts)')) ?></option>
+                            <option value="draft"><?= $block->escapeHtml(__('Drafts only')) ?></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label><?= $block->escapeHtml(__('Sync Status Filter')) ?></label>
+                    </div>
+                    <div class="admin__field-value">
+                        <select id="import-sync-filter" class="admin__control-select">
+                            <option value=""><?= $block->escapeHtml(__('All posts')) ?></option>
+                            <option value="not_synced"><?= $block->escapeHtml(__('Not yet synced to Magento')) ?></option>
+                            <option value="synced"><?= $block->escapeHtml(__('Already synced')) ?></option>
+                            <option value="failed"><?= $block->escapeHtml(__('Failed sync (retry)')) ?></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="button"
+                                id="requestdesk-test-btn"
+                                class="action-secondary"
+                                onclick="testConnection()">
+                            <span><?= $block->escapeHtml(__('Test Connection')) ?></span>
+                        </button>
+
+                        <button type="button"
+                                id="requestdesk-import-btn"
+                                class="action-primary"
+                                onclick="importPosts()">
+                            <span><?= $block->escapeHtml(__('Import Posts')) ?></span>
+                        </button>
+
+                        <a href="<?= $block->escapeUrl($block->getPostsListUrl()) ?>" class="action-secondary">
+                            <?= $block->escapeHtml(__('View All Posts')) ?>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="import-result" class="message" style="display: none; margin-top: 20px;"></div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="admin__page-section" style="margin-top: 20px;">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('How Import Works')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <ul style="margin-left: 20px;">
+                <li><?= $block->escapeHtml(__('Posts are fetched from RequestDesk using your API key')) ?></li>
+                <li><?= $block->escapeHtml(__('New posts are created in Magento; existing posts are updated')) ?></li>
+                <li><?= $block->escapeHtml(__('SEO fields (title, description) are imported automatically')) ?></li>
+                <li><?= $block->escapeHtml(__('Featured images and author information are preserved')) ?></li>
+                <li><?= $block->escapeHtml(__('Sync status is reported back to RequestDesk for tracking')) ?></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="admin__page-section" style="margin-top: 20px;">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('Related Posts Feature')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div style="padding: 15px; background: #f5f5f5; border-radius: 4px;">
+                <h4 style="margin-top: 0;"><?= $block->escapeHtml(__('AI-Powered Related Posts')) ?></h4>
+                <p><?= $block->escapeHtml(__('Once your products are synced to RequestDesk, the system uses RAG (Retrieval-Augmented Generation) to find semantically related blog posts for each product.')) ?></p>
+                <p><?= $block->escapeHtml(__('This means your blog posts can automatically appear on product pages where they\'re most relevant - no manual tagging required.')) ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function testConnection() {
+        var btn = document.getElementById('requestdesk-test-btn');
+        var resultDiv = document.getElementById('import-result');
+
+        btn.disabled = true;
+        btn.querySelector('span').textContent = '<?= $block->escapeJs(__('Testing...')) ?>';
+
+        fetch('<?= $block->escapeUrl($block->getTestUrl()) ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            resultDiv.style.display = 'block';
+            if (data.success) {
+                resultDiv.className = 'message message-success';
+                var msg = '<strong><?= $block->escapeJs(__('Connection Successful!')) ?></strong>';
+                if (data.agent_name) {
+                    msg += '<br><?= $block->escapeJs(__('Agent:')) ?> ' + data.agent_name;
+                }
+                if (data.posts_available !== undefined) {
+                    msg += '<br><?= $block->escapeJs(__('Posts available:')) ?> ' + data.posts_available;
+                }
+                resultDiv.innerHTML = msg;
+            } else {
+                resultDiv.className = 'message message-error';
+                resultDiv.innerHTML = '<strong><?= $block->escapeJs(__('Connection Failed')) ?></strong><br>' +
+                    (data.error || '<?= $block->escapeJs(__('Unknown error')) ?>');
+            }
+        })
+        .catch(error => {
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'message message-error';
+            resultDiv.innerHTML = '<strong><?= $block->escapeJs(__('Request Failed')) ?></strong><br>' + error.message;
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.querySelector('span').textContent = '<?= $block->escapeJs(__('Test Connection')) ?>';
+        });
+    }
+
+    function importPosts() {
+        var btn = document.getElementById('requestdesk-import-btn');
+        var resultDiv = document.getElementById('import-result');
+        var statusFilter = document.getElementById('import-status-filter').value;
+        var syncFilter = document.getElementById('import-sync-filter').value;
+
+        if (!confirm('<?= $block->escapeJs(__('This will import posts from RequestDesk. Existing posts will be updated. Continue?')) ?>')) {
+            return;
+        }
+
+        btn.disabled = true;
+        btn.querySelector('span').textContent = '<?= $block->escapeJs(__('Importing...')) ?>';
+        resultDiv.style.display = 'block';
+        resultDiv.className = 'message message-info';
+        resultDiv.innerHTML = '<?= $block->escapeJs(__('Importing posts... This may take a moment.')) ?>';
+
+        var url = '<?= $block->escapeUrl($block->getImportUrl()) ?>';
+        var params = new URLSearchParams();
+        if (statusFilter) params.append('status', statusFilter);
+        if (syncFilter) params.append('sync_status', syncFilter);
+        if (params.toString()) url += '?' + params.toString();
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                resultDiv.className = 'message message-success';
+                var msg = '<strong><?= $block->escapeJs(__('Import Complete!')) ?></strong><br>';
+                msg += '<?= $block->escapeJs(__('Created:')) ?> ' + (data.imported || 0) + '<br>';
+                msg += '<?= $block->escapeJs(__('Updated:')) ?> ' + (data.updated || 0) + '<br>';
+                if (data.failed > 0) {
+                    msg += '<?= $block->escapeJs(__('Failed:')) ?> ' + data.failed;
+                }
+                if (data.has_more) {
+                    msg += '<br><em><?= $block->escapeJs(__('More posts available - run import again to continue.')) ?></em>';
+                }
+                resultDiv.innerHTML = msg;
+
+                // Reload page after 2 seconds to update counts
+                setTimeout(function() {
+                    location.reload();
+                }, 2000);
+            } else {
+                resultDiv.className = 'message message-error';
+                resultDiv.innerHTML = '<strong><?= $block->escapeJs(__('Import Failed')) ?></strong><br>' +
+                    (data.error || '<?= $block->escapeJs(__('Unknown error')) ?>');
+            }
+        })
+        .catch(error => {
+            resultDiv.className = 'message message-error';
+            resultDiv.innerHTML = '<strong><?= $block->escapeJs(__('Request Failed')) ?></strong><br>' + error.message;
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.querySelector('span').textContent = '<?= $block->escapeJs(__('Import Posts')) ?>';
+        });
+    }
+</script>
+
+<style>
+    .requestdesk-import-container {
+        max-width: 900px;
+    }
+    .requestdesk-import-container .admin__page-section {
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .requestdesk-import-container .admin__page-section-title {
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    .requestdesk-import-container .admin__page-section-title .title {
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .requestdesk-import-container .admin__field {
+        margin-bottom: 15px;
+    }
+    .requestdesk-import-container .admin__field-label {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    .requestdesk-import-container .admin__control-select {
+        min-width: 250px;
+    }
+    .requestdesk-import-container .actions-toolbar {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+    .requestdesk-import-container .actions-toolbar .primary {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+</style>

@@ -58,9 +58,19 @@
                     <comment>Base URL for RequestDesk API (e.g., https://api.requestdesk.ai)</comment>
                 </field>
 
-                <field id="company_id" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Company ID</label>
-                    <comment>Your RequestDesk company identifier.</comment>
+                <field id="test_connection" translate="label" type="button" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Test Connection</label>
+                    <frontend_model>RequestDesk\Blog\Block\Adminhtml\System\Config\TestConnection</frontend_model>
+                </field>
+            </group>
+
+            <group id="cron" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Automated Import</label>
+
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Automatic Import</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Automatically import published posts from RequestDesk every hour.</comment>
                 </field>
             </group>
 

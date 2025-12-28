@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RequestDesk Blog - Hyva Theme Layout for Blog Listing
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="RequestDesk\Blog\Block\ListPosts"
+                   name="blog.list"
+                   template="RequestDesk_Blog::hyva/list.phtml"
+                   cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

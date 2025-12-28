@@ -83,4 +83,94 @@
         </resources>
     </route>
 
+    <!-- ============================================================ -->
+    <!-- DATA EXPORT ENDPOINTS (RequestDesk pulls data from Magento)  -->
+    <!-- Authenticated via X-RequestDesk-Key header in service layer  -->
+    <!-- ============================================================ -->
+
+    <!-- Test Connection -->
+    <route url="/V1/requestdesk/export/test" method="GET">
+        <service class="RequestDesk\Blog\Api\DataExportInterface" method="testConnection"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Export Products -->
+    <route url="/V1/requestdesk/export/products" method="GET">
+        <service class="RequestDesk\Blog\Api\DataExportInterface" method="getProducts"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Export Categories -->
+    <route url="/V1/requestdesk/export/categories" method="GET">
+        <service class="RequestDesk\Blog\Api\DataExportInterface" method="getCategories"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Export CMS Pages -->
+    <route url="/V1/requestdesk/export/cms-pages" method="GET">
+        <service class="RequestDesk\Blog\Api\DataExportInterface" method="getCmsPages"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- ============================================================ -->
+    <!-- EXTERNAL BLOG API (RequestDesk pushes posts TO Magento)      -->
+    <!-- Same pattern as Shopify: X-RequestDesk-Key header auth       -->
+    <!-- ============================================================ -->
+
+    <!-- Test External Blog Connection -->
+    <route url="/V1/requestdesk/external/blog/test" method="GET">
+        <service class="RequestDesk\Blog\Api\ExternalBlogInterface" method="testConnection"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Create Blog Post (RequestDesk pushes to Magento) -->
+    <route url="/V1/requestdesk/external/blog/posts" method="POST">
+        <service class="RequestDesk\Blog\Api\ExternalBlogInterface" method="createPost"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- List Blog Posts -->
+    <route url="/V1/requestdesk/external/blog/posts" method="GET">
+        <service class="RequestDesk\Blog\Api\ExternalBlogInterface" method="listPosts"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Get Single Blog Post -->
+    <route url="/V1/requestdesk/external/blog/posts/:postId" method="GET">
+        <service class="RequestDesk\Blog\Api\ExternalBlogInterface" method="getPost"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Update Blog Post -->
+    <route url="/V1/requestdesk/external/blog/posts/:postId" method="PUT">
+        <service class="RequestDesk\Blog\Api\ExternalBlogInterface" method="updatePost"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <!-- Delete Blog Post -->
+    <route url="/V1/requestdesk/external/blog/posts/:postId" method="DELETE">
+        <service class="RequestDesk\Blog\Api\ExternalBlogInterface" method="deletePost"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
 </routes>

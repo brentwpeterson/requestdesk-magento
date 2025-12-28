@@ -1,0 +1,51 @@
+<?php
+/** @var \RequestDesk\Blog\Block\Adminhtml\System\Config\TestConnection $block */
+?>
+<div class="requestdesk-test-connection">
+    <?= $block->getButtonHtml() ?>
+    <span id="requestdesk_test_result" style="margin-left: 10px;"></span>
+</div>
+
+<script type="text/javascript">
+    require(['jquery', 'Magento_Ui/js/modal/alert'], function($, alert) {
+        $('#requestdesk_test_connection').on('click', function() {
+            var $button = $(this);
+            var $result = $('#requestdesk_test_result');
+
+            // Get values from the form
+            var apiKey = $('#requestdesk_blog_api_api_key').val();
+            var endpointUrl = $('#requestdesk_blog_api_endpoint_url').val();
+
+            if (!apiKey || !endpointUrl) {
+                $result.html('<span style="color: red;">Please enter API Key and Endpoint URL first.</span>');
+                return;
+            }
+
+            $button.prop('disabled', true);
+            $result.html('<span style="color: #666;">Testing connection...</span>');
+
+            $.ajax({
+                url: '<?= $block->escapeUrl($block->getAjaxUrl()) ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    form_key: FORM_KEY,
+                    api_key: apiKey,
+                    endpoint_url: endpointUrl
+                },
+                success: function(response) {
+                    $button.prop('disabled', false);
+                    if (response.success) {
+                        $result.html('<span style="color: green; font-weight: bold;">&#10004; ' + response.message + '</span>');
+                    } else {
+                        $result.html('<span style="color: red;">&#10008; ' + response.message + '</span>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $button.prop('disabled', false);
+                    $result.html('<span style="color: red;">&#10008; Connection failed: ' + error + '</span>');
+                }
+            });
+        });
+    });
+</script>

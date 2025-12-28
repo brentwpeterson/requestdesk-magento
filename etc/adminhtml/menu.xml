@@ -28,5 +28,25 @@
              sortOrder="10"
              action="requestdesk_blog/post/index"
              resource="RequestDesk_Blog::view"/>
+
+        <!-- Sync Products Submenu -->
+        <add id="RequestDesk_Blog::sync_products"
+             title="Sync Products"
+             translate="title"
+             module="RequestDesk_Blog"
+             parent="RequestDesk_Blog::blog"
+             sortOrder="20"
+             action="requestdesk_blog/sync/index"
+             resource="RequestDesk_Blog::sync"/>
+
+        <!-- Import Posts Submenu -->
+        <add id="RequestDesk_Blog::import_posts"
+             title="Import Posts"
+             translate="title"
+             module="RequestDesk_Blog"
+             parent="RequestDesk_Blog::blog"
+             sortOrder="15"
+             action="requestdesk_blog/import/index"
+             resource="RequestDesk_Blog::import"/>
     </menu>
 </config>
