@@ -380,6 +380,18 @@ Copyright (c) 2025 Content Basis LLC
 
 ## Roadmap
 
+### WYSIWYG Editor (Planned)
+
+Full rich-text editing for blog posts directly in the Magento admin.
+
+- TinyMCE integration (Magento native)
+- Image upload and media gallery integration
+- Product widget insertion
+- HTML source editing
+- Responsive preview
+
+---
+
 ### Brand Analyzer & Content Scoring (Planned)
 
 A comprehensive brand consistency and content quality analyzer for your entire Magento store.
@@ -411,6 +423,38 @@ A comprehensive brand consistency and content quality analyzer for your entire M
 - Pull brand guidelines from your RequestDesk persona
 - AI-powered suggestions for content improvements
 - One-click content regeneration for low-scoring pages
+
+---
+
+### AEO Score - AI Search Optimization (Planned)
+
+Optimize your content to be found and cited by AI assistants (ChatGPT, Claude, Perplexity, Google AI Overviews).
+
+**What is AEO?**
+Answer Engine Optimization (AEO) is the practice of structuring content so AI systems can easily understand, extract, and cite it in responses. As more users search via AI, traditional SEO alone isn't enough.
+
+**AEO Scoring Dimensions:**
+| Dimension | Description |
+|-----------|-------------|
+| Question Targeting | Content answers specific questions users ask AI |
+| Structured Data | Schema.org markup for AI comprehension |
+| Concise Answers | Clear, quotable statements AI can extract |
+| Authority Signals | E-E-A-T factors that make AI trust your content |
+| Source Attribution | Proper citations and references |
+| Content Freshness | Recent updates that AI systems prefer |
+
+**Features:**
+- Per-page AEO score with specific recommendations
+- Question extraction: "What questions does this page answer?"
+- AI citation checker: See if your content appears in AI responses
+- Structured data generator for products and articles
+- Competitor AEO comparison
+- "AI-ready" content templates
+
+**Why This Matters:**
+- 40% of Gen Z prefers TikTok/AI over Google for search
+- AI Overviews now appear in 30%+ of Google searches
+- Content not optimized for AI will become invisible
 
 ## Changelog
 
