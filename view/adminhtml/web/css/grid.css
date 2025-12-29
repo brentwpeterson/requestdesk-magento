@@ -1,0 +1,17 @@
+/**
+ * Copyright (c) 2025 Content Basis LLC
+ *
+ * RequestDesk Blog Admin Grid Styles
+ * Fix for action dropdown overflow clipping
+ */
+
+/* Add bottom padding to grid wrapper so dropdown has room */
+.admin__data-grid-wrap {
+    padding-bottom: 100px;
+}
+
+/* Alternative: make action menu use fixed positioning */
+.data-grid .action-menu {
+    position: fixed !important;
+    z-index: 10000 !important;
+}

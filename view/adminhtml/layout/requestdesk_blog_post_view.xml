@@ -1,4 +1,5 @@
-<?php
+<?xml version="1.0"?>
+<!--
 /**
  * Copyright (c) 2025 Content Basis LLC
  *
@@ -6,23 +7,19 @@
  * that is bundled with this package in the file LICENSE.txt.
  * It is also available at https://opensource.org/licenses/OSL-3.0
  *
- * RequestDesk Blog Extension for Magento 2
- * Provides blog functionality with direct RequestDesk API integration.
- * Enables bidirectional blog post sync between Magento and RequestDesk.
- *
  * @category  RequestDesk
  * @package   RequestDesk_Blog
  * @author    Content Basis LLC
  * @copyright Copyright (c) 2025 Content Basis LLC
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License 3.0
  */
-
-declare(strict_types=1);
-
-use Magento\Framework\Component\ComponentRegistrar;
-
-ComponentRegistrar::register(
-    ComponentRegistrar::MODULE,
-    'RequestDesk_Blog',
-    __DIR__
-);
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles"/>
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="requestdesk_blog_post_form"/>
+        </referenceContainer>
+    </body>
+</page>

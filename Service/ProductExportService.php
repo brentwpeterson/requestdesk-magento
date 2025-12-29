@@ -1,18 +1,22 @@
 <?php
 /**
- * RequestDesk Product Export Service
+ * Copyright (c) 2025 Content Basis LLC
  *
- * Exports Magento products to RequestDesk knowledge base for AI analysis.
- * Transforms products into the standardized document format expected by RequestDesk.
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available at https://opensource.org/licenses/OSL-3.0
  *
  * @category  RequestDesk
  * @package   RequestDesk_Blog
+ * @author    Content Basis LLC
+ * @copyright Copyright (c) 2025 Content Basis LLC
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License 3.0
  */
-
 declare(strict_types=1);
 
 namespace RequestDesk\Blog\Service;
 
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -63,6 +67,11 @@ class ProductExportService
     private LoggerInterface $logger;
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    private CategoryRepositoryInterface $categoryRepository;
+
+    /**
      * @param ProductCollectionFactory $productCollectionFactory
      * @param ProductRepositoryInterface $productRepository
      * @param ScopeConfigInterface $scopeConfig
@@ -70,6 +79,7 @@ class ProductExportService
      * @param ImageHelper $imageHelper
      * @param Curl $curl
      * @param LoggerInterface $logger
+     * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         ProductCollectionFactory $productCollectionFactory,
@@ -78,7 +88,8 @@ class ProductExportService
         StoreManagerInterface $storeManager,
         ImageHelper $imageHelper,
         Curl $curl,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CategoryRepositoryInterface $categoryRepository
     ) {
         $this->productCollectionFactory = $productCollectionFactory;
         $this->productRepository = $productRepository;
@@ -87,6 +98,7 @@ class ProductExportService
         $this->imageHelper = $imageHelper;
         $this->curl = $curl;
         $this->logger = $logger;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -330,12 +342,9 @@ class ProductExportService
         try {
             $categoryIds = $product->getCategoryIds();
             if (!empty($categoryIds)) {
-                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-                $categoryRepository = $objectManager->get(\Magento\Catalog\Api\CategoryRepositoryInterface::class);
-
                 foreach ($categoryIds as $categoryId) {
                     try {
-                        $category = $categoryRepository->get($categoryId);
+                        $category = $this->categoryRepository->get($categoryId);
                         $categories[] = $category->getName();
                     } catch (\Exception $e) {
                         // Skip invalid categories

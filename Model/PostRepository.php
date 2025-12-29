@@ -1,23 +1,29 @@
 <?php
 /**
- * RequestDesk Blog Post Repository
+ * Copyright (c) 2025 Content Basis LLC
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available at https://opensource.org/licenses/OSL-3.0
  *
  * @category  RequestDesk
  * @package   RequestDesk_Blog
+ * @author    Content Basis LLC
+ * @copyright Copyright (c) 2025 Content Basis LLC
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License 3.0
  */
-
 declare(strict_types=1);
 
 namespace RequestDesk\Blog\Model;
 
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use RequestDesk\Blog\Api\Data\PostInterface;
 use RequestDesk\Blog\Api\Data\PostSearchResultsInterface;
+use RequestDesk\Blog\Api\Data\PostSearchResultsInterfaceFactory;
 use RequestDesk\Blog\Api\PostRepositoryInterface;
 use RequestDesk\Blog\Model\ResourceModel\Post as PostResource;
 use RequestDesk\Blog\Model\ResourceModel\Post\CollectionFactory;
@@ -28,14 +34,14 @@ class PostRepository implements PostRepositoryInterface
      * @param PostResource $resource
      * @param PostFactory $postFactory
      * @param CollectionFactory $collectionFactory
-     * @param SearchResultsInterfaceFactory $searchResultsFactory
+     * @param PostSearchResultsInterfaceFactory $searchResultsFactory
      * @param CollectionProcessorInterface $collectionProcessor
      */
     public function __construct(
         private readonly PostResource $resource,
         private readonly PostFactory $postFactory,
         private readonly CollectionFactory $collectionFactory,
-        private readonly SearchResultsInterfaceFactory $searchResultsFactory,
+        private readonly PostSearchResultsInterfaceFactory $searchResultsFactory,
         private readonly CollectionProcessorInterface $collectionProcessor
     ) {
     }

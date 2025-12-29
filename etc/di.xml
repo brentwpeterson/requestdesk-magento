@@ -15,7 +15,7 @@
                 type="RequestDesk\Blog\Model\Post"/>
 
     <preference for="RequestDesk\Blog\Api\Data\PostSearchResultsInterface"
-                type="Magento\Framework\Api\SearchResults"/>
+                type="RequestDesk\Blog\Model\PostSearchResults"/>
 
     <preference for="RequestDesk\Blog\Api\PostRepositoryInterface"
                 type="RequestDesk\Blog\Model\PostRepository"/>

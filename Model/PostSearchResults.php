@@ -14,18 +14,22 @@
  */
 declare(strict_types=1);
 
-namespace RequestDesk\Blog\Api\Data;
+namespace RequestDesk\Blog\Model;
 
-use Magento\Framework\Api\SearchResultsInterface;
+use Magento\Framework\Api\SearchResults;
+use RequestDesk\Blog\Api\Data\PostSearchResultsInterface;
 
-interface PostSearchResultsInterface extends SearchResultsInterface
+class PostSearchResults extends SearchResults implements PostSearchResultsInterface
 {
     /**
      * Get posts list
      *
      * @return \RequestDesk\Blog\Api\Data\PostInterface[]
      */
-    public function getItems(): array;
+    public function getItems(): array
+    {
+        return parent::getItems() ?? [];
+    }
 
     /**
      * Set posts list
@@ -33,5 +37,9 @@ interface PostSearchResultsInterface extends SearchResultsInterface
      * @param \RequestDesk\Blog\Api\Data\PostInterface[] $items
      * @return $this
      */
-    public function setItems(array $items): self;
+    public function setItems(array $items): self
+    {
+        parent::setItems($items);
+        return $this;
+    }
 }

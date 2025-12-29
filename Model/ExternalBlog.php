@@ -1,15 +1,17 @@
 <?php
 /**
- * RequestDesk External Blog Service
+ * Copyright (c) 2025 Content Basis LLC
  *
- * Implements the ExternalBlogInterface to allow RequestDesk to push blog posts.
- * Uses X-RequestDesk-Key header authentication (same pattern as Shopify).
- * Reuses PostRepository and PostManagement for actual CRUD operations.
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available at https://opensource.org/licenses/OSL-3.0
  *
  * @category  RequestDesk
  * @package   RequestDesk_Blog
+ * @author    Content Basis LLC
+ * @copyright Copyright (c) 2025 Content Basis LLC
+ * @license   https://opensource.org/licenses/OSL-3.0 Open Software License 3.0
  */
-
 declare(strict_types=1);
 
 namespace RequestDesk\Blog\Model;
@@ -23,6 +25,7 @@ use Magento\Framework\Webapi\Rest\Request;
 use Magento\Framework\Exception\AuthorizationException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Encryption\EncryptorInterface;
+use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Psr\Log\LoggerInterface;
 
 class ExternalBlog implements ExternalBlogInterface
@@ -36,6 +39,7 @@ class ExternalBlog implements ExternalBlogInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param Request $request
      * @param EncryptorInterface $encryptor
+     * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -45,6 +49,7 @@ class ExternalBlog implements ExternalBlogInterface
         private readonly ScopeConfigInterface $scopeConfig,
         private readonly Request $request,
         private readonly EncryptorInterface $encryptor,
+        private readonly SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -136,14 +141,6 @@ class ExternalBlog implements ExternalBlogInterface
         $this->validateApiKey();
 
         $store = $this->storeManager->getStore();
-
-        // Count existing posts
-        try {
-            $searchCriteria = new \Magento\Framework\Api\SearchCriteriaBuilder();
-            // Just return basic info without search
-        } catch (\Exception $e) {
-            // Ignore count errors
-        }
 
         return [
             'success' => true,
@@ -435,7 +432,7 @@ class ExternalBlog implements ExternalBlogInterface
         $this->validateApiKey();
 
         try {
-            $searchCriteriaBuilder = new \Magento\Framework\Api\SearchCriteriaBuilder();
+            $searchCriteriaBuilder = $this->searchCriteriaBuilderFactory->create();
 
             if ($status === 'published') {
                 $searchCriteriaBuilder->addFilter('status', PostInterface::STATUS_PUBLISHED);
