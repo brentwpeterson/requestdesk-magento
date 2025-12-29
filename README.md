@@ -61,7 +61,7 @@ Complete API for headless/PWA implementations and RequestDesk communication.
 ### Via Composer (Recommended)
 
 ```bash
-composer require requestdesk/module-blog
+composer require requestdesk/magento-blog
 bin/magento module:enable RequestDesk_Blog
 bin/magento setup:upgrade
 bin/magento setup:di:compile
@@ -458,7 +458,11 @@ Answer Engine Optimization (AEO) is the practice of structuring content so AI sy
 
 ## Changelog
 
-### 1.0.0 (2025-01-XX)
+### 1.1.0 (2025-12-29)
+- **Package renamed** from `requestdesk/module-blog` to `requestdesk/magento-blog`
+- Establishes multi-platform naming convention (`magento-*`, `wordpress-*`, etc.)
+
+### 1.0.0 (2025-12-29)
 - Initial release
 - Full blog system with posts and categories
 - Product-to-post linking
